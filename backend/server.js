@@ -43,6 +43,22 @@ app.get('/api/projects', (req, res) => {
     res.json(projects);
 });
 
+// Proxy for Discord Bot Stats to avoid Mixed Content on Vercel
+app.get('/api/discord-stats', async (req, res) => {
+    try {
+        const botUrl = process.env.BOT_API_URL || 'http://localhost:5001/api/discord-stats';
+        const response = await fetch(botUrl);
+        if (!response.ok) {
+            throw new Error(`Bot returned status ${response.status}`);
+        }
+        const data = await response.json();
+        res.json(data);
+    } catch (error) {
+        console.error('Failed to fetch from bot:', error.message);
+        res.status(500).json({ error: 'Failed to connect to Discord Bot' });
+    }
+});
+
 const nodemailer = require('nodemailer');
 
 // Gmail SMTP Transporter

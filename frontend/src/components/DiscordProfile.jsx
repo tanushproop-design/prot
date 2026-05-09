@@ -10,7 +10,7 @@ const DiscordProfile = () => {
   useEffect(() => {
     const fetchDiscordData = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/discord-stats');
+        const response = await fetch('/api/discord-stats');
         const result = await response.json();
         if (result.users) {
           setUsersData(result.users);
